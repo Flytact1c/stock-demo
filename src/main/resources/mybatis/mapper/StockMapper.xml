@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuu.stock.stockservice.mapper.StockMapper">
+
+    <resultMap id="stock" type="com.yuu.stock.stockservice.entity.Stock">
+        <id column="sku_id" property="skuId" jdbcType="BIGINT" />
+        <id column="name" property="name" jdbcType="VARCHAR" />
+        <id column="stock_num" property="stockNum" jdbcType="VARCHAR" />
+        <id column="version" property="version" jdbcType="BIGINT" />
+        <id column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime"   jdbcType="TIMESTAMP"/>
+        <id column="modify_by" property="modifyBy" jdbcType="VARCHAR" />
+        <id column="modfiy_time" property="modifyTime"  jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <update id="updateStockNum" parameterType="com.yuu.stock.stockservice.entity.Stock">
+        update stock set
+        version = version+1
+        <if test="stockNum != null">
+            ,stock_num = #{stockNum}
+        </if>
+        <if test="createBy != null">
+            ,create_by = #{createBy}
+        </if>
+        <if test="createTime != null">
+            ,create_time = #{createTime}
+        </if>
+        <if test="modifyBy != null">
+            ,modify_by = #{modifyBy}
+        </if>
+        <if test="modifyTime != null">
+           ,modify_time = #{modifyTime}
+        </if>
+        where
+         version=#{version}
+         and  sku_id=#{skuId}
+
+    </update>
+
+
+
+    <select id="getStock" resultMap="stock">
+        select
+        *
+        from
+            stock
+        where
+            sku_id=#{skuId}
+    </select>
+</mapper>
